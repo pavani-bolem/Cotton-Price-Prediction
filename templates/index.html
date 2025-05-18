@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotton Price Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        function fetchDistricts() {
+            let state = document.getElementById("state").value;
+            fetch('/get_districts', {
+                method: 'POST',
+                body: new URLSearchParams({state: state}),
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            }).then(response => response.json())
+              .then(data => {
+                  let districtDropdown = document.getElementById("district");
+                  districtDropdown.innerHTML = "";
+                  data.districts.forEach(d => {
+                      let option = document.createElement("option");
+                      option.value = d;
+                      option.text = d;
+                      districtDropdown.add(option);
+                  });
+                  fetchMarkets();
+              });
+        }
+
+        function fetchMarkets() {
+            let state = document.getElementById("state").value;
+            let district = document.getElementById("district").value;
+            fetch('/get_markets', {
+                method: 'POST',
+                body: new URLSearchParams({state: state, district: district}),
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            }).then(response => response.json())
+              .then(data => {
+                  let marketDropdown = document.getElementById("market");
+                  marketDropdown.innerHTML = "";
+                  data.markets.forEach(m => {
+                      let option = document.createElement("option");
+                      option.value = m;
+                      option.text = m;
+                      marketDropdown.add(option);
+                  });
+              });
+        }
+        document.getElementById("predict-button").addEventListener("click", function() {
+    setTimeout(() => {
+        document.querySelector(".result-box").classList.add("predicted");
+    }, 100); // Small delay to ensure text appears before color change
+});
+
+    </script>
+</head>
+<body>
+    <h1>Cotton Price Prediction</h1>
+    <form action="/predict" method="post">
+        <label>State:</label>
+        <select id="state" name="state" onchange="fetchDistricts()">
+            {% for state in states %}
+                <option value="{{ state }}">{{ state }}</option>
+            {% endfor %}
+        </select>
+
+        <label>District:</label>
+        <select id="district" name="district" onchange="fetchMarkets()"></select>
+
+        <label>Market:</label>
+        <select id="market" name="market"></select>
+
+        <label>Date:</label>
+        <input type="date" name="date" required>
+
+        <button type="submit">Predict</button>
+    </form>
+
+    {% if prediction %}
+        <h2>{{ prediction }}</h2>
+    {% endif %}
+</body>
+</html>

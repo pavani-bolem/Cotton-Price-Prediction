@@ -1,5 +1,24 @@
-1)Open Command Prompt (Windows) or Terminal (Mac/Linux) and run:
+--> Project description:
+This project presents a machine learning approach to 
+predicting cotton prices using a Random Forest Regressor. By 
+analyzing historical data, including geographical and market 
+variables, the model delivers accurate price forecasts that 
+support better decision-making in the agricultural sector. The 
+application of this model can help farmers, traders, and 
+policymakers anticipate market trends and optimize their 
+strategies. This work highlights the growing role of data
+driven solutions in enhancing the efficiency and sustainability 
+of agricultural economics. 
 
+
+--> Model & libraries used:
+  Pandas: Data Manipulation
+  Scikit-learn: Model Development
+  NumPy: Numerical Processing
+
+
+-->How to run:
+1)Open Command Prompt (Windows) or Terminal (Mac/Linux) and run:
 pip install -r requirements.txt
 
 2)Prepare the Dataset
